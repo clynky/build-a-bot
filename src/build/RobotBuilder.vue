@@ -1,40 +1,44 @@
 <!-- eslint-disable max-len -->
 <template>
-    <div class="content">
-        <button class="add-to-cart" @click="addToCart">Add to Cart</button>
-        <div class="top-row">
-          <div class="robot-name">
-            {{ selectedRobot.head.title }}
-            <span v-if="selectedRobot.head.onSale" class="sale">Sale!</span>
-          </div>
-          <PartSelector :parts="availableParts.heads" position="top" />
-        </div>
-        <div class="middle-row">
-            <PartSelector :parts="availableParts.arms" position="left" />
-            <PartSelector :parts="availableParts.torsos" position="center" />
-            <PartSelector :parts="availableParts.arms" position="right" />
-        </div>
-        <div class="bottom-row">
-            <PartSelector :parts="availableParts.bases" position="bottom" />
-        </div>
+  <div class="content">
+    <button class="add-to-cart" @click="addToCart">Add to Cart</button>
+    <div class="top-row">
+      <div class="robot-name">
+        {{ selectedRobot.head.title }}
+        <span v-if="selectedRobot.head.onSale" class="sale">Sale!</span>
+      </div>
+      <PartSelector :parts="availableParts.heads" position="top" @partsSelected="part => selectedRobot.head = part" />
     </div>
-    <div>
-      <h1>Cart</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Robot</th>
-            <th class="cost">Cost</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(robot, index) in cart" :key="index">
-            <td>{{ robot.head.title }}</td>
-            <td class="cost">{{ toCurrency(robot.cost) }}</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="middle-row">
+      <PartSelector :parts="availableParts.arms" position="left"
+        @partsSelected="part => selectedRobot.leftArm = part" />
+      <PartSelector :parts="availableParts.torsos" position="center"
+        @partsSelected="part => selectedRobot.torso = part" />
+      <PartSelector :parts="availableParts.arms" position="right"
+        @partsSelected="part => selectedRobot.rightArm = part" />
     </div>
+    <div class="bottom-row">
+      <PartSelector :parts="availableParts.bases" position="bottom"
+        @partsSelected="part => selectedRobot.base = part" />
+    </div>
+  </div>
+  <div>
+    <h1>Cart</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Robot</th>
+          <th class="cost">Cost</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(robot, index) in cart" :key="index">
+          <td>{{ robot.head.title }}</td>
+          <td class="cost">{{ toCurrency(robot.cost) }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script setup>
@@ -82,7 +86,7 @@ const addToCart = () => {
 
 .part {
   img {
-  width: 200px;
+    width: 200px;
   }
 }
 
@@ -182,12 +186,14 @@ const addToCart = () => {
 .right .next-selector {
   right: -3px;
 }
+
 .robot-name {
   position: absolute;
   top: -25px;
   text-align: center;
   width: 100%;
 }
+
 .sale {
   color: red;
 }
@@ -212,6 +218,6 @@ th {
 }
 
 .cost {
-  text-align:right;
+  text-align: right;
 }
 </style>
