@@ -1,3 +1,4 @@
+<!-- eslint-disable no-unused-vars -->
 <template>
   <header>
     <nav>
@@ -24,6 +25,14 @@ export default {
   name: 'App',
   components: {
     RobotBuilder,
+  },
+  data() {
+    return {
+      userName: 'Jim',
+    };
+  },
+  provide: {
+    userName: 'Jim',
   },
 };
 </script>

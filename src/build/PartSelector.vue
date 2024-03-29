@@ -1,5 +1,6 @@
 <template>
   <div class="part" :class="position">
+    <div>User: {{ userName }}</div>
     <img :src="selectedPart.imageUrl" alt="part" />
     <button @click="selectPreviousPart()" class="prev-selector"></button>
     <button @click="selectNextPart()" class="next-selector"></button>
@@ -8,7 +9,11 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import {
+  computed, ref, onUpdated, inject,
+} from 'vue';
+
+const userName = inject('userName');
 
 const props = defineProps({
   parts: { type: Array, required: true },
@@ -21,6 +26,10 @@ const props = defineProps({
 const emit = defineEmits(['partsSelected']);
 const selectedPartIndex = ref(0);
 const selectedPart = computed(() => props.parts[selectedPartIndex.value]);
+
+emit('partsSelected', selectedPart);
+
+onUpdated(() => emit('partsSelected', selectedPart));
 
 function getPreviousValidIndex(index, length) {
   const deprecatedIndex = index - 1;
@@ -37,7 +46,6 @@ const selectNextPart = () => {
     selectedPartIndex.value,
     props.parts.length,
   );
-  emit('partsSelected', selectedPart);
 };
 
 const selectPreviousPart = () => {
@@ -45,7 +53,6 @@ const selectPreviousPart = () => {
     selectedPartIndex.value,
     props.parts.length,
   );
-  emit('partsSelected', selectedPart);
 };
 </script>
 
