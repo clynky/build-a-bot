@@ -4,7 +4,7 @@
       <img class="robot" src="../assets/robot-home.png" aria-hidden="true" alt="Robot" />
     </div>
     <div>
-      <a href="">Get started</a> building your first robot!
+      <router-link to="/build">Get started</router-link> building your first robot!
     </div>
   </div>
 </template>
@@ -23,9 +23,11 @@ export default {
 .home {
   text-align: center;
 }
+
 .robot {
   height: 500px;
 }
+
 .get-started {
   padding-top: 20px;
   font-size: 32px;
