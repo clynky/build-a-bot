@@ -2,7 +2,7 @@
 <!-- eslint-disable vuejs-accessibility/alt-text -->
 <!-- eslint-disable max-len -->
 <template>
-  <div class="content">
+  <div class="content" v-if="partsStore.parts">
     <div class="preview">
       <CollapsibleSection>
         <template v-slot:collapse>&#x25B2; Hide</template>
@@ -28,18 +28,18 @@
         {{ selectedRobot.head.title }}
         <span v-if="selectedRobot.head.onSale" class="sale">Sale!</span>
       </div>
-      <PartSelector :parts="availableParts.heads" position="top" @partsSelected="part => selectedRobot.head = part" />
+      <PartSelector :parts="partsStore.parts.heads" position="top" @partsSelected="part => selectedRobot.head = part" />
     </div>
     <div class="middle-row">
-      <PartSelector :parts="availableParts.arms" position="left"
+      <PartSelector :parts="partsStore.parts.arms" position="left"
         @partsSelected="part => selectedRobot.leftArm = part" />
-      <PartSelector :parts="availableParts.torsos" position="center"
+      <PartSelector :parts="partsStore.parts.torsos" position="center"
         @partsSelected="part => selectedRobot.torso = part" />
-      <PartSelector :parts="availableParts.arms" position="right"
+      <PartSelector :parts="partsStore.parts.arms" position="right"
         @partsSelected="part => selectedRobot.rightArm = part" />
     </div>
     <div class="bottom-row">
-      <PartSelector :parts="availableParts.bases" position="bottom"
+      <PartSelector :parts="partsStore.parts.bases" position="bottom"
         @partsSelected="part => selectedRobot.base = part" />
     </div>
   </div>
@@ -47,15 +47,17 @@
 
 <script setup>
 import { computed, ref, onMounted } from 'vue';
-import parts from '../data/parts';
 import PartSelector from './PartSelector.vue';
 import CollapsibleSection from '../shared/CollapsibleSection.vue';
 
 import { useCartStore } from '../stores/cartStore';
+// eslint-disable-next-line import/named
+import { usePartsStore } from '../stores/partsStore';
 
 const cartStore = useCartStore();
+const partsStore = usePartsStore();
 
-const availableParts = parts;
+partsStore.getParts();
 
 onMounted(() => console.log('onMounted executed'));
 const selectedRobot = ref({
