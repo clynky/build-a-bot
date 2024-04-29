@@ -1,7 +1,9 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-unused-vars */
 /* eslint-disable quotes */
 const path = require('path');
 const express = require("express");
+const history = require('connect-history-api-fallback');
 
 const app = express();
 
@@ -172,5 +174,9 @@ app.post('/api/cart', (req, res) => setTimeout(() => res.status(201).send(), 800
 app.post('/api/sign-in', (req, res) => res.status(200).send());
 
 app.use('/api/images', express.static('images'));
+
+app.use(history({ index: '/index.html' }));
+
+app.use('/', express.static('dist', { index: 'index.html' }));
 
 app.listen(8081, () => console.log('Server listening on port 8081!'));
